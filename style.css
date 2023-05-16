@@ -1,0 +1,106 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom left, #e6b3f3, #fdce58);
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  
+ 
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    text-align: center;
+    background: linear-gradient(to top right, #a59b9bb3, #d54040);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .container::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    z-index: -1;
+    background: linear-gradient(to bottom right, #a2c4d9, #eff1f3);
+    border-radius: 20px;
+  }
+  
+  h1 {
+    font-size: 32px;
+    margin-top: 0;
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .upload-container {
+    margin-bottom: 30px;
+  }
+  
+  .upload-label {
+    display: block;
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  #image-container img {
+    max-width: 300px;
+    max-height: 300px;
+    object-fit: contain;
+    margin-top: 20px;
+    border: 6px solid #333;
+  }
+  
+  
+  #label-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  #label-container > div {
+    flex-basis: 100%;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+  }
+  
+  button:hover {
+    background-color: #555;
+  }
+  
+  input[type="file"] {
+    display: none;
+  }
+  
+  .upload-label::after {
+    content: "Browse";
+    background-color: #333;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    display: inline-block;
+    cursor: pointer;
+  }
