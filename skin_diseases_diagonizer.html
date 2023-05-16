@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Classification</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Skin Condition Diagonizer</h1>
+    <div class="upload-container">
+      <label for="image-upload" class="upload-label">Select an image:</label>
+      <input type="file" id="image-upload" accept="image/*" />
+      <button type="button" onclick="initializePrediction()">Upload Image</button>
+    </div>
+    <div id="image-container"></div>
+    <div id="label-container"></div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+  <script src="script.js"></script>
+  <style>
+    #image-container img {
+      max-width: 300px;
+      max-height: 300px;
+      object-fit: contain;
+    }
+  </style>
+  <script type="text/javascript">
+    const URL = "https://teachablemachine.withgoogle.com/models/QXo6gR_cg/";
+  
+    let model, labelContainer, maxPredictions;
+  
+    async function init() {
+      const modelURL = URL + "model.json";
+      const metadataURL = URL + "metadata.json";
+  
+      model = await tmImage.load(modelURL, metadataURL);
+      maxPredictions = model.getTotalClasses();
+  
+      labelContainer = document.getElementById("label-container");
+      for (let i = 0; i < maxPredictions; i++) {
+        labelContainer.appendChild(document.createElement("div"));
+      }
+    }
+  
+    async function predictFromImage() {
+      const inputElement = document.getElementById("image-upload");
+      const file = inputElement.files[0];
+  
+      if (file) {
+        const reader = new FileReader();
+  
+        reader.onload = async function (event) {
+          const img = new Image();
+          img.src = event.target.result;
+          img.onload = async function () {
+            displayImage(img);
+            await predict(img);
+          };
+        };
+  
+        reader.readAsDataURL(file);
+      }
+    }
+  
+    function displayImage(image) {
+      const imageContainer = document.getElementById("image-container");
+      imageContainer.innerHTML = ""; // Clear previous image
+  
+      const imgElement = document.createElement("img");
+      imgElement.src = image.src;
+      imageContainer.appendChild(imgElement);
+    }
+  
+    async function predict(imageElement) {
+      if (!model) {
+        console.log("Model not loaded yet.");
+        return;
+      }
+  
+      const prediction = await model.predict(imageElement);
+  
+      for (let i = 0; i < maxPredictions; i++) 
+       {
+        const prediction = await model.predict(imageElement);
+        //if(prediction[i].probability.toFixed(2)>=0.50){
+        const classPrediction =
+          prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+            labelContainer.childNodes[i].innerHTML = classPrediction;
+            //break;
+        //}
+      }
+    }
+
+    async function initializePrediction() {
+      const inputElement = document.getElementById("image-upload");
+      if (inputElement && inputElement.files.length > 0) {
+        await init(); // Load the model if not already loaded
+        predictFromImage();
+      }
+    }
+    document.getElementById("image-upload").addEventListener("change", initializePrediction);
+  </script>
+</body>
+</html>
